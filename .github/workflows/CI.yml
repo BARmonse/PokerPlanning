@@ -29,4 +29,4 @@ jobs:
       - name: Run Build
         uses: borales/actions-yarn@v4
         with:
-          cmd: build
+          cmd: run build
