@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
 
     steps:
       - uses: actions/checkout@v3
@@ -26,4 +29,4 @@ jobs:
       - name: Run Build
         uses: borales/actions-yarn@v4
         with:
-          cmd: yarn build
+          cmd: build
