@@ -13,9 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Move to client directory
-        run: cd client
-
       - name: Set Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -23,10 +20,12 @@ jobs:
 
       - name: Run Install
         uses: borales/actions-yarn@v4
+        run: cd client
         with:
           cmd: install
 
       - name: Run Build
         uses: borales/actions-yarn@v4
+        run: cd client
         with:
           cmd: build
