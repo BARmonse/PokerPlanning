@@ -26,6 +26,5 @@ jobs:
 
       - name: Run Build
         uses: borales/actions-yarn@v4
-        run: cd client
         with:
           cmd: build
