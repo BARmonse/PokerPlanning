@@ -1,0 +1,4 @@
+Flask==2.2.3
+Flask-SocketIO
+Flask-CORS
+eventlet
