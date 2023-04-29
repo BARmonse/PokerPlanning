@@ -4,14 +4,15 @@ import { io } from "socket.io-client";
 function App() {
 
   useEffect(() => {
-    const socket = io("localhost:/5000/", {
+    const socket = io("http://localhost:5000/", {
       transports: ["websocket"]
     });
 
     socket.emit("test")
 
+    socket.on("test", () => console.log("HOLAA"))
+
     return () => {
-      console.log("DISCONNECTING")
       socket.disconnect()
     }
   }, [])
