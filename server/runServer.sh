@@ -1,5 +1,9 @@
 #!/bin/sh
 
-set -ex
+reset='\033[0m';
+cyan='\033[0;36m';
 
-python3 main.py
+echo "\n${cyan}Installing dependencies${reset}\n"
+pip install -r requirements.txt;
+echo "\n${cyan}Running server${reset}\n"
+python3 main.py;
