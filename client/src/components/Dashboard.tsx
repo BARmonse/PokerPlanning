@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 export const Dashboard = () => {
   return (
     <Box>
-      <Button className="">Create Game</Button>
+      <Button>Create Game</Button>
     </Box>
   );
 };
