@@ -17,6 +17,7 @@ const useStyles = makeStyles({
     backgroundColor: Colors.NICE_PURPLE,
     display: 'flex',
     justifyContent: 'center',
+    flex: '0 0 auto',
   },
   headerTitle: {
     display: 'flex',

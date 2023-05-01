@@ -1,10 +1,14 @@
-import { Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Container } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 export const Dashboard = () => {
-  return (
-    <Box>
-      <Button>Create Game</Button>
-    </Box>
-  );
+  const classes = useStyles();
+  return <Container className={classes.dashboardContainer}></Container>;
 };
+
+const useStyles = makeStyles({
+  dashboardContainer: {
+    display: 'flex',
+    flex: '1 0 auto',
+  },
+});
