@@ -1,22 +1,17 @@
-import { useEffect } from 'react';
-import { io } from 'socket.io-client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Dashboard } from './components/Dashboard';
+import { Box } from '@mui/material';
 
-function App() {
-  useEffect(() => {
-    const socket = io('http://localhost:5000/', {
-      transports: ['websocket'],
-    });
-
-    socket.emit('test');
-
-    socket.on('test', () => console.log('HOLAA'));
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  return <></>;
-}
+const App = () => {
+  return (
+    <Box>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </Router>
+    </Box>
+  );
+};
 
 export default App;
