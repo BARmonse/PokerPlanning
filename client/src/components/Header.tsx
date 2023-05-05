@@ -18,10 +18,12 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     flex: '0 0 auto',
+    marginBottom: '5em',
   },
   headerTitle: {
     display: 'flex',
     alignSelf: 'center',
     color: Colors.WHITE,
+    fontSize: '20px !important',
   },
 });
