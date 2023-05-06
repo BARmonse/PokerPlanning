@@ -1,15 +1,9 @@
 import { makeStyles } from '@mui/styles';
 import { Colors } from '../enums/Colors';
-import {
-  Container,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-  styled,
-} from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Language } from '../enums/Language';
+import { CustomContainer } from './styled-components/CustomContainer';
 
 export const Header = () => {
   const classes = useStyles();
@@ -19,10 +13,6 @@ export const Header = () => {
   const handleLanguageChange = (event: SelectChangeEvent) => {
     setLanguage(event.target.value);
   };
-
-  const CustomContainer = styled(Container)({
-    display: 'flex',
-  });
 
   return (
     <CustomContainer className={classes.headerContainer}>
@@ -45,12 +35,9 @@ const useStyles = makeStyles({
   headerContainer: {
     minHeight: '10vh',
     backgroundColor: Colors.NICE_PURPLE,
-    display: 'flex',
     justifyContent: 'center',
     flex: '0 0 auto',
-    maxWidth: '100%',
     margin: '0 0 5em 0',
-    padding: '0',
   },
   headerTitle: {
     display: 'flex',
