@@ -1,2 +1,2 @@
 # PokerPlanning
-Small application to make estimations
+Small application to make estimations(WIP)
