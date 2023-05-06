@@ -1,15 +1,29 @@
 import { TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Colors } from '../enums/Colors';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
 import { CustomButton } from './styled-components/CustomButton';
 import { CustomContainer } from './styled-components/CustomContainer';
+import * as WebSocket from 'websocket';
+import { WEB_SOCKET_URL } from '../constants/constants';
 
 export const Dashboard = () => {
   const classes = useStyles();
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
+
+  /*useEffect(() => {
+    const socket = new WebSocket.w3cwebsocket(WEB_SOCKET_URL);
+
+    socket.onopen = function () {
+      socket.send('helloheee!');
+      socket.onmessage = (msg: WebSocket.IMessageEvent) => {
+        console.log(msg.data);
+      };
+    };
+  }, []);
+  */
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
