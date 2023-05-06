@@ -15,7 +15,7 @@ export const Header = () => {
   };
 
   return (
-    <CustomContainer className={classes.headerContainer}>
+    <CustomContainer margin="0 0 4em 0" className={classes.headerContainer}>
       <Typography className={classes.headerTitle}>POKER PLANNING</Typography>
       <Select
         className={classes.language}
@@ -37,7 +37,6 @@ const useStyles = makeStyles({
     backgroundColor: Colors.NICE_PURPLE,
     justifyContent: 'center',
     flex: '0 0 auto',
-    margin: '0 0 5em 0',
   },
   headerTitle: {
     display: 'flex',

@@ -5,11 +5,15 @@ import './index.css';
 import { makeStyles } from '@mui/styles';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
+import { CustomContainer } from './components/styled-components/CustomContainer';
 
 const App = () => {
   const classes = useStyles();
   return (
-    <div className={classes.appContainer}>
+    <CustomContainer
+      flexDirection="column"
+      alignItems="center"
+      className={classes.appContainer}>
       <Router>
         <Header />
         <Routes>
@@ -17,7 +21,7 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
-    </div>
+    </CustomContainer>
   );
 };
 
