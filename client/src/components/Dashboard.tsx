@@ -1,4 +1,4 @@
-import { Button, Container, TextField, Typography } from '@mui/material';
+import { Button, Container, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Colors } from '../enums/Colors';
 import { useState, useMemo } from 'react';
@@ -46,7 +46,7 @@ export const Dashboard = () => {
 
 const useStyles = makeStyles({
   dashboardContainer: {
-    display: 'flex !important',
+    display: 'flex',
     flex: '1 0 auto',
     flexDirection: 'column',
     alignItems: 'center',
@@ -55,11 +55,11 @@ const useStyles = makeStyles({
   },
   button: {
     display: 'flex',
-    color: `${Colors.NICE_PURPLE} !important`,
+    color: `${Colors.NICE_PURPLE}`,
     borderRadius: '5px',
-    border: `3px solid ${Colors.NICE_PURPLE} !important`,
+    border: `3px solid ${Colors.NICE_PURPLE}`,
     width: '50%',
-    fontSize: '24px !important',
+    fontSize: '24px',
   },
   inputCode: {
     width: '50%',
