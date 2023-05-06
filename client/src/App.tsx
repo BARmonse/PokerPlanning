@@ -6,9 +6,24 @@ import { makeStyles } from '@mui/styles';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
 import { CustomContainer } from './components/styled-components/CustomContainer';
+import { useEffect } from 'react';
+import * as WebSocket from 'websocket';
+import { WEB_SOCKET_URL } from './constants/constants';
 
 const App = () => {
   const classes = useStyles();
+
+  useEffect(() => {
+    const socket = new WebSocket.w3cwebsocket(WEB_SOCKET_URL);
+
+    socket.onopen = function () {
+      socket.send('helloheee!');
+      socket.onmessage = (msg: WebSocket.IMessageEvent) => {
+        console.log(msg.data);
+      };
+    };
+  }, []);
+
   return (
     <CustomContainer
       flexDirection="column"

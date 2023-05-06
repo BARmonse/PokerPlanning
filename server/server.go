@@ -43,7 +43,7 @@ func reader(conn *websocket.Conn) {
             return
         }
     // print out that message for clarity
-        fmt.Println(string(p))
+        fmt.Println("See this message", string(p))
 
         if err := conn.WriteMessage(messageType, p); err != nil {
             log.Println(err)
@@ -54,17 +54,12 @@ func reader(conn *websocket.Conn) {
 }
 
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Home Page")
-}
-
 func setupRoutes() {
-    http.HandleFunc("/", homePage)
     http.HandleFunc("/ws", wsEndpoint)
 }
 
 func main() {
-    fmt.Println("Hello World")
+    fmt.Println("Server initialized")
     setupRoutes()
     log.Fatal(http.ListenAndServe(":8080", nil))
 }
