@@ -6,9 +6,13 @@ import { makeStyles } from '@mui/styles';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
 import { CustomContainer } from './components/styled-components/CustomContainer';
+import { useEffect } from 'react';
+import * as WebSocket from 'websocket';
 
 const App = () => {
   const classes = useStyles();
+
+  useEffect(() => {}, []);
 
   return (
     <CustomContainer
