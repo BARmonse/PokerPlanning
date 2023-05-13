@@ -39,6 +39,9 @@ func (m *Manager) serve(w http.ResponseWriter, r *http.Request) {
 	client:= NewClient(connection, m)
 	m.addClient(client)
 
+	go client.readMessages()
+	go client.writeMessages()
+
 }
 
 func (m *Manager) addClient(client *Client) {

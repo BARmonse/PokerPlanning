@@ -9,7 +9,7 @@ import { WEB_SOCKET_URL } from './constants/constants';
 import useWebSocket from 'react-use-websocket';
 
 const App = () => {
-  useWebSocket(WEB_SOCKET_URL, {
+  const ws = useWebSocket(WEB_SOCKET_URL, {
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
