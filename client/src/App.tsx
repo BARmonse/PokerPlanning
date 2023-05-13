@@ -2,20 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Dashboard } from './components/Dashboard';
 import { Colors } from './enums/Colors';
 import './index.css';
-import { makeStyles } from '@mui/styles';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
-import { CustomContainer } from './components/styled-components/CustomContainer';
-import * as WebSocket from 'websocket';
+import React from 'react';
+import { Box } from '@mui/material';
 
 const App = () => {
-  const classes = useStyles();
-
   return (
-    <CustomContainer
-      flexDirection="column"
-      alignItems="center"
-      className={classes.appContainer}>
+    <Box sx={{ backgroundColor: Colors.LIGHT_GRAY, minHeight: '100vh' }}>
       <Router>
         <Header />
         <Routes>
@@ -23,15 +17,8 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
-    </CustomContainer>
+    </Box>
   );
 };
 
 export default App;
-
-const useStyles = makeStyles({
-  appContainer: {
-    backgroundColor: Colors.LIGHT_GRAY,
-    minHeight: '100vh',
-  },
-});

@@ -1,10 +1,8 @@
-import { TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Colors } from '../enums/Colors';
 import { useState, useMemo } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
-import { CustomButton } from './styled-components/CustomButton';
-import { CustomContainer } from './styled-components/CustomContainer';
 
 export const Dashboard = () => {
   const classes = useStyles();
@@ -22,17 +20,22 @@ export const Dashboard = () => {
   };
 
   return (
-    <CustomContainer
-      flexDirection="column"
-      alignItems="center"
-      className={classes.dashboardContainer}>
-      <CustomButton className={classes.button}>Create Room</CustomButton>
-      <CustomButton
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flex: '1 0 auto',
+        minHeight: '100vh',
+        gap: '3em',
+      }}>
+      <Button className={classes.button}>Create Room</Button>
+      <Button
         disabled={showCodeInput && !isValidCode}
         onClick={handleJoinClick}
         className={classes.button}>
         Join Room
-      </CustomButton>
+      </Button>
 
       {showCodeInput && (
         <TextField
@@ -45,16 +48,11 @@ export const Dashboard = () => {
           label="Code Room"
         />
       )}
-    </CustomContainer>
+    </Box>
   );
 };
 
 const useStyles = makeStyles({
-  dashboardContainer: {
-    flex: '1 0 auto',
-    minHeight: '100vh',
-    gap: '3em',
-  },
   button: {
     color: `${Colors.NICE_PURPLE}`,
     borderRadius: '5px',
