@@ -18,4 +18,4 @@ jobs:
         with:
           dir: 'server'
           cache-dependency-path: server/go.sum
-      - run: go run *.go
+      - run: go run .
