@@ -29,6 +29,9 @@ func newManager() *Manager{
 func (m *Manager) serve(w http.ResponseWriter, r *http.Request) {
 	log.Println("Connection initialized")
 
+	// Only for testing purpose. Use a list of accepted origins instead.
+	webSocketUpgrader.CheckOrigin = func(r *http.Request) bool { return true }
+
 	connection, error := webSocketUpgrader.Upgrade(w, r, nil)
 
 	if error != nil {
