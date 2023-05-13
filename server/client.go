@@ -33,12 +33,14 @@ func (client* Client) readMessages() {
 		client.manager.removeCLient(client)
 	}()
 
-	for {
-		_, payload, error := client.connection.ReadMessage()
+	client.connection.SetReadLimit(512)
 
-		if error != nil {
-			if websocket.IsUnexpectedCloseError(error, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("Error reading message: %v", error)
+	for {
+		_, payload, err := client.connection.ReadMessage()
+
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("Error reading message: %v", err)
 			}
 			break
 		}
@@ -84,5 +86,7 @@ func (client* Client) writeMessages() {
 			}
 			log.Println("Message sent")
 		}
+		
 	}
 }
+

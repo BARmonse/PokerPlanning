@@ -12,6 +12,7 @@ import (
 
 var (
 	webSocketUpgrader = websocket.Upgrader{
+		CheckOrigin: checkOrigin,
 		ReadBufferSize: 1024,
 		WriteBufferSize: 1024,
 	}
@@ -61,9 +62,6 @@ func (m* Manager) routeEvent(event *Event, client *Client) error {
 func (m *Manager) serve(w http.ResponseWriter, r *http.Request) {
 	log.Println("Connection initialized")
 
-	// Only for testing purpose. Use a list of accepted origins instead.
-	webSocketUpgrader.CheckOrigin = func(r *http.Request) bool { return true }
-
 	connection, error := webSocketUpgrader.Upgrade(w, r, nil)
 
 	if error != nil {
@@ -93,5 +91,16 @@ func (m *Manager) removeCLient(client *Client) {
 	if _, ok := m.clients[client]; ok {
 		client.connection.Close()
 		delete(m.clients, client)
+	}
+}
+
+func checkOrigin(request *http.Request) bool {
+	origin := request.Header.Get("Origin")
+
+	switch origin {
+	case "http://localhost:3000":
+		return true
+	default:
+		return false
 	}
 }
