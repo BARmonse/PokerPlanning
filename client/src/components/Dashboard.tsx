@@ -1,8 +1,8 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState, useMemo } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
-import useWebSocket from 'react-use-websocket';
-import { WEB_SOCKET_URL } from '../constants/constants';
+//import useWebSocket from 'react-use-websocket';
+//import { WEB_SOCKET_URL } from '../constants/constants';
 import {
   buttonStyle,
   dashboardContainerStyle,
@@ -15,11 +15,12 @@ export const Dashboard = () => {
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
-  const ws = useWebSocket(WEB_SOCKET_URL, {
+  /*const ws = useWebSocket(WEB_SOCKET_URL, {
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
   });
+  */
 
   const handleJoinClick = () => {
     setShowCodeInput(true);
