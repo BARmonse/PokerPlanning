@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 
 	"github.com/gorilla/websocket"
@@ -14,26 +15,26 @@ type Client struct {
 	manager *Manager
 
 	// Used to avoid concurrent writes
-	egress chan[] byte
+	egress chan Event
 }
 
 func NewClient(conn *websocket.Conn, manager *Manager) *Client {
 	return &Client{
 		connection: conn,
 		manager: manager,
-		egress: make(chan []byte),
+		egress: make(chan Event),
 	}
 }
 
-func (c* Client) readMessages() {
+func (client* Client) readMessages() {
 
 	defer func() {
 		// Cleanup Connection
-		c.manager.removeCLient(c)
+		client.manager.removeCLient(c)
 	}()
 
 	for {
-		messageType, payload, error := c.connection.ReadMessage()
+		_, payload, error := client.connection.ReadMessage()
 
 		if error != nil {
 			if websocket.IsUnexpectedCloseError(error, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
@@ -42,28 +43,43 @@ func (c* Client) readMessages() {
 			break
 		}
 
-		log.Println(messageType)
-		log.Println(string(payload))
+		var request Event
+
+		if err := json.Unmarshal(payload, &request); err != nil {
+			log.Printf("Error marshaling event: %v", err)
+			break
+		}
+
+		if err := client.manager.routeEvent(&request, client); err != nil {
+			log.Println("Error handling event: %v", err)
+		}
 	}
 }
 
-func (c* Client) writeMessages() {
+func (client* Client) writeMessages() {
 
 	defer func() {
 		// Cleanup Connection
-		c.manager.removeCLient(c)
+		client.manager.removeCLient(client)
 	}()
 
 	for {
 		select {
-		case message, ok := <-c.egress:
+		case message, ok := <-client.egress:
 			if !ok {
-				if err := c.connection.WriteMessage(websocket.CloseMessage, nil); err != nil {
+				if err := client.connection.WriteMessage(websocket.CloseMessage, nil); err != nil {
 					log.Println("Connection Closed")
 				}
 			}
 
-			if err := c.connection.WriteMessage(websocket.TextMessage, message); err != nil {
+			data, err := json.Marshal(message)
+
+			if err != nil {
+				log.Println("Error marshaling message: %v", message)
+				return
+			}
+
+			if err := client.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Printf("Failed to send message: %v", err)
 			}
 			log.Println("Message sent")
