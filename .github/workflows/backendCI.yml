@@ -25,7 +25,7 @@ jobs:
         working-directory: ${{ github.workspace }}/server
       - name: Install dependencies and build
         run: |
-          go mod download
+          go mod download .
           go build .
       - name: Run Go program
         run: |
