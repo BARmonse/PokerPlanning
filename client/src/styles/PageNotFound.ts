@@ -10,6 +10,4 @@ export const notFoundTextStyle: SxProps = {
   color: Colors.RED,
   fontWeight: 'bolder',
   fontSize: '24px',
-  textAlign: 'center',
-  alignSelf: 'center',
 };
