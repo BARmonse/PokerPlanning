@@ -30,7 +30,7 @@ func (client* Client) readMessages() {
 
 	defer func() {
 		// Cleanup Connection
-		client.manager.removeCLient(c)
+		client.manager.removeCLient(client)
 	}()
 
 	for {
@@ -51,7 +51,7 @@ func (client* Client) readMessages() {
 		}
 
 		if err := client.manager.routeEvent(&request, client); err != nil {
-			log.Println("Error handling event: %v", err)
+			log.Printf("Error handling event: %v", err)
 		}
 	}
 }
@@ -75,7 +75,7 @@ func (client* Client) writeMessages() {
 			data, err := json.Marshal(message)
 
 			if err != nil {
-				log.Println("Error marshaling message: %v", message)
+				log.Printf("Error marshaling message: %v", message)
 				return
 			}
 
