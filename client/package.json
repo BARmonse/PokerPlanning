@@ -14,17 +14,13 @@
     "@emotion/styled": "^11.10.8",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.3",
-    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
-    "@mui/styled-engine-sc": "^5.12.0",
-    "@mui/styles": "^5.12.0",
+    "@mui/styles": "^5.12.3",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/styled-components": "^5.1.26",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.0",
-    "socket.io-client": "^4.6.1",
-    "styled-components": "^5.3.10",
+    "react-use-websocket": "3.0.0",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
@@ -40,8 +36,5 @@
     "prettier": "2.8.8",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
-  },
-  "resolutions": {
-    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   }
 }
