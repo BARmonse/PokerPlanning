@@ -20,7 +20,8 @@ jobs:
       - name: Set up project directory
         run: |
           mkdir -p server
-          cp -r ./* server/
+          shopt -s extglob
+          cp -r !(server) server/
         working-directory: ${{ github.workspace }}/server
       - name: Install dependencies and build
         run: |
