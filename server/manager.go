@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -18,12 +20,42 @@ var (
 type Manager struct {
 	clients ClientList
 	sync.RWMutex
+
+	handlers map[string]EventHandler
 }
 
 func newManager() *Manager{
-	return &Manager{
+	m := &Manager{
 		clients: make(ClientList),
+		handlers: make(map[string]EventHandler),
 	}
+
+	m.setUpEventHandlers()
+	return m
+}
+
+func (m *Manager) setUpEventHandlers() {
+	m.handlers[ROOM_CREATED] = createRoom
+}
+
+func createRoom(event *Event, c *Client) error {
+	fmt.Println(event)
+	return nil
+}
+
+func (m* Manager) routeEvent(event *Event, client *Client) error {
+
+	if handler, ok := m.handlers[event.Type]; ok {
+
+		if err := handler(event, client); err != nil {
+			return err
+		}
+
+		return nil
+	} else {
+		return errors.New("There is no such event type")
+	}
+
 }
 
 func (m *Manager) serve(w http.ResponseWriter, r *http.Request) {
