@@ -5,16 +5,8 @@ import './index.css';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
 import { Box } from '@mui/material';
-import { WEB_SOCKET_URL } from './constants/constants';
-import useWebSocket from 'react-use-websocket';
 
 const App = () => {
-  const ws = useWebSocket(WEB_SOCKET_URL, {
-    onOpen: () => {
-      console.log('WebSocket connection established.');
-    },
-  });
-
   return (
     <Box sx={{ backgroundColor: Colors.LIGHT_GRAY, minHeight: '100vh' }}>
       <Router>

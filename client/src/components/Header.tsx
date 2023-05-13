@@ -22,12 +22,16 @@ export const Header = () => {
   return (
     <Box
       sx={{
+        display: 'flex',
         minHeight: '10vh',
         backgroundColor: Colors.NICE_PURPLE,
         justifyContent: 'center',
         flex: '0 0 auto',
+        marginBottom: '4%',
       }}>
-      <Typography className={classes.headerTitle}>POKER PLANNING</Typography>
+      <Typography variant="h3" className={classes.headerTitle}>
+        Poker Planning
+      </Typography>
       <Select
         className={classes.languageSelect}
         labelId="language"
@@ -47,7 +51,6 @@ const useStyles = makeStyles({
     display: 'flex',
     alignSelf: 'center',
     color: Colors.WHITE,
-    fontSize: '20px',
   },
   languageSelect: {
     display: 'flex',

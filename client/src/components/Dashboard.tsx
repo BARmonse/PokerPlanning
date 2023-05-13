@@ -1,15 +1,25 @@
 import { Box, Button, TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { Colors } from '../enums/Colors';
 import { useState, useMemo } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
+import useWebSocket from 'react-use-websocket';
+import { WEB_SOCKET_URL } from '../constants/constants';
+import {
+  buttonStyle,
+  dashboardContainerStyle,
+  inputCodeStyle,
+} from '../styles/Dashboard';
 
 export const Dashboard = () => {
-  const classes = useStyles();
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
+
+  const ws = useWebSocket(WEB_SOCKET_URL, {
+    onOpen: () => {
+      console.log('WebSocket connection established.');
+    },
+  });
 
   const handleJoinClick = () => {
     setShowCodeInput(true);
@@ -20,26 +30,18 @@ export const Dashboard = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        flex: '1 0 auto',
-        minHeight: '100vh',
-        gap: '3em',
-      }}>
-      <Button className={classes.button}>Create Room</Button>
+    <Box sx={dashboardContainerStyle}>
+      <Button sx={buttonStyle}>Create Room</Button>
       <Button
         disabled={showCodeInput && !isValidCode}
         onClick={handleJoinClick}
-        className={classes.button}>
+        sx={buttonStyle}>
         Join Room
       </Button>
 
       {showCodeInput && (
         <TextField
-          className={classes.inputCode}
+          sx={inputCodeStyle}
           placeholder="Enter a code to enter a room"
           defaultValue={null}
           value={code}
@@ -51,20 +53,3 @@ export const Dashboard = () => {
     </Box>
   );
 };
-
-const useStyles = makeStyles({
-  button: {
-    color: `${Colors.NICE_PURPLE}`,
-    borderRadius: '5px',
-    border: `3px solid ${Colors.NICE_PURPLE}`,
-    width: '50%',
-    fontSize: '24px',
-  },
-  inputCode: {
-    width: '50%',
-  },
-  error: {
-    fontSize: '8px',
-    color: Colors.RED,
-  },
-});
