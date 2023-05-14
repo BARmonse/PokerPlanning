@@ -2,31 +2,25 @@ name: Backend CI
 
 on:
   push:
-    branches: ['master']
+    branches:
+      - main
   pull_request:
-    branches: ['master']
+    branches:
+      - main
 
 jobs:
-  build:
+  run-backend:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Go environment
-        uses: actions/setup-go@v4.0.0
+      - name: Set up Go
+        uses: actions/setup-go@v4
         with:
-          go-version: 1.16
-      - name: Set up project directory
-        run: |
-          mkdir -p server
-          shopt -s extglob
-          cp -r !(server) server/
-        working-directory: ${{ github.workspace }}/server
-      - name: Install dependencies and build
-        run: |
-          go mod download .
-          go build .
-      - name: Run Go program
-        run: |
-          go run .
+          go-version: 1.18
+          cache-dependency-path: server/go.sum
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and test
+        run: cd server && go build ./... && go test ./...
