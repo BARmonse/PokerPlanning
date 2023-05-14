@@ -15,6 +15,5 @@ func setupConnection() {
 
 	manager := newManager()
 
-	http.Handle("/", http.FileServer(http.Dir("../client")))
 	http.HandleFunc("/ws", manager.serve)
 }
