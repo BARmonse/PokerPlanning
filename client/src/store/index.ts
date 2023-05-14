@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import socketSlice from './socket/socket-slice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    socket: socketSlice.reducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
