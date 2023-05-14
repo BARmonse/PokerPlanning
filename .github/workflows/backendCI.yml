@@ -18,7 +18,7 @@ jobs:
           cache-dependency-path: server/go.sum
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Build and test
         run: cd server && go build ./... && go test ./...
