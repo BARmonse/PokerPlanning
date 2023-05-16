@@ -6,8 +6,11 @@ import {
   dashboardContainerStyle,
   inputCodeStyle,
 } from '../styles/Dashboard';
+import { useTranslation } from 'react-i18next';
+import '../../i18n';
 
 export const Dashboard = () => {
+  const { t } = useTranslation();
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
@@ -26,24 +29,24 @@ export const Dashboard = () => {
   return (
     <Box sx={dashboardContainerStyle}>
       <Button sx={buttonStyle} onClick={handleCreateRoomClick}>
-        Create Room
+        {t('create_room')}
       </Button>
       <Button
         disabled={showCodeInput && !isValidCode}
         onClick={handleJoinClick}
         sx={buttonStyle}>
-        Join Room
+        {t('join_room')}
       </Button>
 
       {showCodeInput && (
         <TextField
           sx={inputCodeStyle}
-          placeholder="Enter a code to enter a room"
+          placeholder={t('enter_code')!}
           defaultValue={null}
           value={code}
           onChange={handleOnChange}
           error={!isValidCode}
-          label="Code Room"
+          label={t('code_room')}
         />
       )}
     </Box>

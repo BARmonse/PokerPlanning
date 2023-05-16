@@ -12,8 +12,10 @@ import {
   headerTitleStyle,
   languageSelectStyle,
 } from '../styles/Header';
+import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
+  const { t } = useTranslation();
   const [language, setLanguage] = useState<string>(Language.ENGLISH);
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
@@ -30,8 +32,8 @@ export const Header = () => {
         value={language}
         label="Language"
         onChange={handleLanguageChange}>
-        <MenuItem value={Language.ENGLISH}>English</MenuItem>
-        <MenuItem value={Language.SPANISH}>Spanish</MenuItem>
+        <MenuItem value={Language.ENGLISH}>{t('english')}</MenuItem>
+        <MenuItem value={Language.SPANISH}>{t('spanish')}</MenuItem>
       </Select>
     </Box>
   );
