@@ -15,11 +15,13 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export const Header = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   const [language, setLanguage] = useState<string>(Language.ENGLISH);
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
     setLanguage(event.target.value);
+    i18n.changeLanguage(event.target.value);
   };
 
   return (
