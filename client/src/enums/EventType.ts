@@ -8,4 +8,5 @@ export enum EventType {
   TASK_ADDED = 'task_added',
   TASK_UPDATED = 'task_updated',
   TASK_DELETED = 'task_deleted',
+  CONNECT = 'connect',
 }

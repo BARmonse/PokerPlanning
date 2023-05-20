@@ -9,6 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { io } from 'socket.io-client';
+import { WEB_SOCKET_URL } from '../constants/constants';
 
 export const Dashboard = () => {
   const { t } = useTranslation();
@@ -16,12 +17,11 @@ export const Dashboard = () => {
   const [code, setCode] = useState<string>('');
 
   useEffect(() => {
-    const socket = io('ws://localhost:8080/socket.io/', {
+    const socket = io(WEB_SOCKET_URL, {
       transports: ['websocket'],
     });
-    socket.on('connect', () => {
-      console.log('Connected');
-    });
+
+    console.log(socket.active);
   }, []);
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
