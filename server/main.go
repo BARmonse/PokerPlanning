@@ -13,7 +13,7 @@ func main() {
 
 func setupConnection() {
 
-	manager := newManager()
+	roomManager := newRoomManager()
 
-	http.HandleFunc("/ws", manager.serve)
+	http.HandleFunc("/socket.io/", roomManager.serve)
 }

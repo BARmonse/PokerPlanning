@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from '@mui/material';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
 import {
   buttonStyle,
@@ -8,11 +8,21 @@ import {
 } from '../styles/Dashboard';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { io } from 'socket.io-client';
 
 export const Dashboard = () => {
   const { t } = useTranslation();
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
+
+  useEffect(() => {
+    const socket = io('ws://localhost:8080/socket.io/', {
+      transports: ['websocket'],
+    });
+    socket.on('connect', () => {
+      console.log('Connected');
+    });
+  }, []);
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
