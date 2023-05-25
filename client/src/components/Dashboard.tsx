@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from '@mui/material';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
 import {
   buttonStyle,
@@ -8,21 +8,13 @@ import {
 } from '../styles/Dashboard';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
-import { io } from 'socket.io-client';
-import { WEB_SOCKET_URL } from '../constants/constants';
+import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
-
-  useEffect(() => {
-    const socket = io(WEB_SOCKET_URL, {
-      transports: ['websocket'],
-    });
-
-    console.log(socket.active);
-  }, []);
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
@@ -34,7 +26,9 @@ export const Dashboard = () => {
     setCode(event?.target.value);
   };
 
-  const handleCreateRoomClick = () => {};
+  const handleCreateRoomClick = () => {
+    navigate('/room');
+  };
 
   return (
     <Box sx={dashboardContainerStyle}>
