@@ -14,6 +14,8 @@ export const Room = () => {
       transports: ['websocket'],
     });
 
+    socket.active;
+
     socket.emit(EventType.ROOM_CREATED);
     socket.on(EventType.ROOM_CREATED, () =>
       console.log('The Room was Created'),
