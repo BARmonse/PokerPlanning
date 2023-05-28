@@ -49,7 +49,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 		for {
 			_, message, err := conn.ReadMessage()
 			if err != nil {
-				log.Println("WebSocket error:", err)
+				log.Println("Error while reading message:", err)
 				return
 			}
 
@@ -57,7 +57,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 			err = json.Unmarshal(message, &event)
 
 			if err != nil {
-				log.Println("Failed to unmarshal event:", err)
+				log.Println("Failed to decoding event:", err)
 				continue
 			}
 
@@ -72,7 +72,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 	})
 
 	if err != nil {
-		log.Println("WebSocket upgrade error:", err)
+		log.Println("Error upgrading connection:", err)
 	}
 }
 
