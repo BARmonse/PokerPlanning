@@ -3,13 +3,12 @@ import {
   notFoundContainerStyle,
   notFoundTextStyle,
 } from '../styles/PageNotFound';
+import { t } from 'i18next';
 
 export const PageNotFound = () => {
   return (
     <Box sx={notFoundContainerStyle}>
-      <Typography sx={notFoundTextStyle}>
-        Nothing here, please go back...
-      </Typography>
+      <Typography sx={notFoundTextStyle}>{t('nothing_here')}</Typography>
     </Box>
   );
 };

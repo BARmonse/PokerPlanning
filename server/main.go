@@ -2,18 +2,17 @@ package main
 
 import (
 	"log"
-	"net/http"
+
+	"github.com/valyala/fasthttp"
 )
 
 func main() {
-	setupConnection()
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func setupConnection() {
-
 	roomManager := newRoomManager()
 
-	http.HandleFunc("/socket.io/", roomManager.serve)
+	server := &fasthttp.Server{
+		Handler:     roomManager.serve,
+		ReadTimeout: 5 * fasthttp.DefaultDialTimeout,
+	}
+
+	log.Fatal(server.ListenAndServe(":8080"))
 }

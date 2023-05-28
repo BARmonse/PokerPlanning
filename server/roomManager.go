@@ -1,12 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
-	"net/http"
 	"server/models"
 	"sync"
 
-	"github.com/gorilla/websocket"
+	"github.com/fasthttp/websocket"
+	"github.com/valyala/fasthttp"
 )
 
 type RoomManager struct {
@@ -14,16 +15,7 @@ type RoomManager struct {
 	sync.RWMutex
 }
 
-var (
-	webSocketUpgrader = websocket.Upgrader{
-		CheckOrigin: checkOrigin,
-		ReadBufferSize: 1024,
-		WriteBufferSize: 1024,
-	}
-)
-
-
-func newRoomManager() *RoomManager{
+func newRoomManager() *RoomManager {
 	roomManager := &RoomManager{
 		rooms: make(map[string]*models.Room),
 	}
@@ -38,29 +30,54 @@ func (roomManager *RoomManager) addRoom(room *models.Room) {
 	roomManager.rooms[room.Code] = room
 }
 
-func (roomManager *RoomManager) removeCLient(room *models.Room) {
+func (roomManager *RoomManager) removeClient(room *models.Room) {
 	roomManager.Lock()
 	defer roomManager.Unlock()
 
-
 	delete(roomManager.rooms, room.Code)
-	
 }
 
-func (roomManage *RoomManager) serve(w http.ResponseWriter, r *http.Request) {
-	log.Println("Connection initialized")
-	_, error := webSocketUpgrader.Upgrade(w, r, nil)
+func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
+	var upgrader = websocket.FastHTTPUpgrader{
+		CheckOrigin: checkOrigin,
+	}
+	
+	err := upgrader.Upgrade(ctx, func(conn *websocket.Conn) {
+		log.Println("Connection initialized")
+		defer conn.Close()
 
-	if error != nil {
-		log.Println(error)
-		return
+		for {
+			_, message, err := conn.ReadMessage()
+			if err != nil {
+				log.Println("WebSocket error:", err)
+				return
+			}
+
+			var event models.Event
+			err = json.Unmarshal(message, &event)
+
+			if err != nil {
+				log.Println("Failed to unmarshal event:", err)
+				continue
+			}
+
+			switch event.Type {
+			case models.ROOM_CREATED:
+				log.Println("A room was created")
+
+			default:
+				log.Println("Unknown event type:", event.Type)
+			}
+		}
+	})
+
+	if err != nil {
+		log.Println("WebSocket upgrade error:", err)
 	}
 }
 
-
-
-func checkOrigin(request *http.Request) bool {
-	origin := request.Header.Get("Origin")
+func checkOrigin(ctx *fasthttp.RequestCtx) bool {
+	origin := string(ctx.Request.Header.Peek("Origin"))
 
 	switch origin {
 	case "http://localhost:3000":
