@@ -9,9 +9,7 @@ export const Room = () => {
 
   useEffect(() => {
     setLoading(true);
-    const message = { type: EventType.ROOM_CREATED, payload: null };
-
-    WebSocketService.webSocket.send(JSON.stringify(message));
+    WebSocketService.sendEvent(EventType.ROOM_CREATED, {});
     setLoading(false);
   }, []);
 
