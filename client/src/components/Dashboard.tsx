@@ -10,12 +10,13 @@ import {
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useNavigate } from 'react-router-dom';
+import WebSocketService from '../services/WebSocketService';
+import { EventType } from '../enums/EventType';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [username, setUsername] = useState<string>('');
-  const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
@@ -23,7 +24,7 @@ export const Dashboard = () => {
   const isValidUsername = useMemo(() => validateUsername(username), [username]);
 
   const handleJoinClick = () => {
-    setShowCodeInput(true);
+    WebSocketService.sendEvent(EventType.JOIN_ROOM, null);
   };
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +32,7 @@ export const Dashboard = () => {
   };
 
   const handleCreateRoomClick = () => {
-    navigate('/room');
+    WebSocketService.sendEvent(EventType.ROOM_CREATED, { username: username });
   };
 
   const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +41,9 @@ export const Dashboard = () => {
 
   return (
     <Box sx={dashboardContainerStyle}>
-      <Typography sx={userNameStyle}>{t('enter_your_username')}</Typography>
+      <Typography sx={userNameStyle}>
+        {t('enter_your_username').toUpperCase()}
+      </Typography>
       <Input
         value={username}
         placeholder={t('enter_your_username')!}
@@ -53,23 +56,21 @@ export const Dashboard = () => {
         {t('create_room')}
       </Button>
       <Button
-        disabled={(showCodeInput && !isValidCode) || !isValidUsername}
+        disabled={!isValidCode || !isValidUsername}
         onClick={handleJoinClick}
         sx={buttonStyle}>
         {t('join_room')}
       </Button>
 
-      {showCodeInput && (
-        <TextField
-          sx={inputCodeStyle}
-          placeholder={t('enter_code')!}
-          defaultValue={null}
-          value={code}
-          onChange={handleOnChange}
-          error={!isValidCode}
-          label={t('code_room')}
-        />
-      )}
+      <TextField
+        sx={inputCodeStyle}
+        placeholder={t('enter_code')!}
+        defaultValue={null}
+        value={code}
+        onChange={handleOnChange}
+        error={!isValidCode}
+        label={t('code_room')}
+      />
     </Box>
   );
 };

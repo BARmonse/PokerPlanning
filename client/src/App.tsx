@@ -10,8 +10,8 @@ import { Room } from './components/Room';
 const App = () => {
   return (
     <Box sx={appContainerStyle}>
+      <Header />
       <Router>
-        <Header />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/room" element={<Room />} />

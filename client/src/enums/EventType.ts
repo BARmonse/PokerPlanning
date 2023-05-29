@@ -1,5 +1,6 @@
 export enum EventType {
   ROOM_CREATED = 'room_created',
+  JOIN_ROOM = 'join_room',
   ROOM_CLOSED = 'room_closed',
   USER_JOINED = 'user_joined',
   USER_LEFT = 'user_left',
