@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"server/constants"
+	"server/interfaces"
 	"server/models"
 	"sync"
 
@@ -12,6 +14,7 @@ import (
 
 type RoomManager struct {
 	rooms map[string]*models.Room
+	eventHandler interfaces.EventHandler
 	sync.RWMutex
 }
 
@@ -21,6 +24,10 @@ func newRoomManager() *RoomManager {
 	}
 
 	return roomManager
+}
+
+func (rm *RoomManager) setEventHandler(e interfaces.EventHandler) {
+	rm.eventHandler = e
 }
 
 func (roomManager *RoomManager) addRoom(room *models.Room) {
@@ -61,23 +68,13 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 				continue
 			}
 
-			switch event.Type {
-			case models.ROOM_CREATED:
-				var createdRoomPayload models.RoomCreatedPayload
-				
-				err = json.Unmarshal(event.Payload, &createdRoomPayload)
-
-				if err != nil {
-					log.Println("Errow while decoding username:", err)
-					continue
-				}
-				
-				log.Printf("Room created by %v", createdRoomPayload.Username)
-
-
-			default:
-				log.Println("Unknown event type:", event.Type)
+			eventHandler, found := constants.EventHandlers[event.Type]
+			if (!found) {
+				log.Println("Unknown Event Type:", event.Type)
+			continue
 			}
+
+			eventHandler.HandleEvent(event.Payload);
 		}
 	})
 
