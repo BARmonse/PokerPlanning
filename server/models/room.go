@@ -1,6 +1,9 @@
 package models
 
 import (
+	"encoding/json"
+	"log"
+
 	"github.com/fasthttp/websocket"
 
 	"server/utils"
@@ -30,11 +33,26 @@ func CreateRoom(conn *websocket.Conn, username string) *Room {
 		conn,
 	}
 
-	return &Room{
+	newRoom := &Room{
 		Identifier:  identifier,
 		Code:        code,
 		Players:     initialPlayers,
 		Tasks:       []Task{},
 		Connections: initialConnections,
 	}
+
+	newRoomJSON, err := json.Marshal(newRoom)
+	if err != nil {
+		log.Println("Error marshaling new room:", err)
+		return nil
+	}
+
+	event := Event{
+		Type:    "ROOM_CREATED",
+		Payload: newRoomJSON,
+	}
+	eventJSON, _ := json.Marshal(event)
+	conn.WriteMessage(websocket.TextMessage, eventJSON)
+
+	return newRoom
 }

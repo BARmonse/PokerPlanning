@@ -1,5 +1,5 @@
 import { Box, Button, Input, TextField, Typography } from '@mui/material';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { validateRoomCode, validateUsername } from '../utils/ValidationUtils';
 import {
   buttonStyle,
@@ -12,6 +12,7 @@ import '../../i18n';
 import { useNavigate } from 'react-router-dom';
 import WebSocketService from '../services/WebSocketService';
 import { EventType } from '../enums/EventType';
+import { Room } from '../interfaces/Room';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +23,17 @@ export const Dashboard = () => {
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
   const isValidUsername = useMemo(() => validateUsername(username), [username]);
+
+  useEffect(() => {
+    WebSocketService.webSocket.addEventListener('message', message =>
+      console.log(JSON.parse(message.data).payload as Room),
+    );
+
+    return () =>
+      WebSocketService.webSocket.removeEventListener('message', message =>
+        console.log(JSON.parse(message.data).payload as Room),
+      );
+  }, []);
 
   const handleJoinClick = () => {
     WebSocketService.sendEvent(EventType.JOIN_ROOM, {
