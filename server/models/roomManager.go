@@ -1,11 +1,8 @@
-package main
+package models
 
 import (
 	"encoding/json"
 	"log"
-	"server/constants"
-	"server/interfaces"
-	"server/models"
 	"sync"
 
 	"github.com/fasthttp/websocket"
@@ -13,38 +10,49 @@ import (
 )
 
 type RoomManager struct {
-	rooms map[string]*models.Room
-	eventHandler interfaces.EventHandler
+	rooms map[string]*Room
+	eventHandler EventHandler
+	eventEmitter EventEmitter
 	sync.RWMutex
 }
 
-func newRoomManager() *RoomManager {
+func NewRoomManager() *RoomManager {
 	roomManager := &RoomManager{
-		rooms: make(map[string]*models.Room),
+		rooms: make(map[string]*Room),
+		eventEmitter: *NewEventEmitter(),
 	}
+
+	roomManager.setupListeners()
 
 	return roomManager
 }
 
-func (rm *RoomManager) setEventHandler(e interfaces.EventHandler) {
-	rm.eventHandler = e
-}
-
-func (roomManager *RoomManager) addRoom(room *models.Room) {
+func (roomManager *RoomManager) addRoom(room *Room) {
 	roomManager.Lock()
 	defer roomManager.Unlock()
 
 	roomManager.rooms[room.Code] = room
 }
 
-func (roomManager *RoomManager) removeClient(room *models.Room) {
+func (roomManager *RoomManager) removeClient(room *Room) {
 	roomManager.Lock()
 	defer roomManager.Unlock()
 
 	delete(roomManager.rooms, room.Code)
 }
 
-func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
+func (rm *RoomManager) setupListeners() {
+	rm.eventEmitter.On(ROOM_CREATED, func(payload interface{}) {
+		if room, ok := payload.(*Room); ok {
+			rm.addRoom(room)
+			log.Printf("Created room: %+v", room)
+		} else {
+			log.Println("Invalid payload type")
+		}
+	})
+}
+
+func (roomManager *RoomManager) Serve(ctx *fasthttp.RequestCtx) {
 	var upgrader = websocket.FastHTTPUpgrader{
 		CheckOrigin: checkOrigin,
 	}
@@ -52,7 +60,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 	err := upgrader.Upgrade(ctx, func(conn *websocket.Conn) {
 		log.Println("Connection initialized")
 		defer conn.Close()
-
+ 
 		for {
 			_, message, err := conn.ReadMessage()
 			if err != nil {
@@ -60,7 +68,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 				return
 			}
 
-			var event models.Event
+			var event Event
 			err = json.Unmarshal(message, &event)
 
 			if err != nil {
@@ -68,13 +76,13 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 				continue
 			}
 
-			eventHandler, found := constants.EventHandlers[event.Type]
+			eventHandler, found := EventHandlers[event.Type]
 			if (!found) {
 				log.Println("Unknown Event Type:", event.Type)
 			continue
 			}
 
-			eventHandler.HandleEvent(event.Payload);
+			eventHandler.HandleEvent(conn, event.Payload, roomManager.eventEmitter);
 		}
 	})
 

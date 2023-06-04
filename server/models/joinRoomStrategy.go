@@ -3,6 +3,8 @@ package models
 import (
 	"encoding/json"
 	"log"
+
+	"github.com/fasthttp/websocket"
 )
 
 type JoinRoomRequest struct {
@@ -13,7 +15,7 @@ type JoinRoomRequest struct {
 type JoinRoomStrategy struct {
 }
 
-func (s *JoinRoomStrategy) HandleEvent(eventPayload json.RawMessage) {
+func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, em EventEmitter) {
 	var joinRoomRequest JoinRoomRequest
 	err := json.Unmarshal(eventPayload, &joinRoomRequest)
 	if err != nil {
