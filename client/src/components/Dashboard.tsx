@@ -24,7 +24,10 @@ export const Dashboard = () => {
   const isValidUsername = useMemo(() => validateUsername(username), [username]);
 
   const handleJoinClick = () => {
-    WebSocketService.sendEvent(EventType.JOIN_ROOM, null);
+    WebSocketService.sendEvent(EventType.JOIN_ROOM, {
+      username: username,
+      code: code,
+    });
   };
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {

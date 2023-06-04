@@ -7,4 +7,5 @@ import (
 
 var EventHandlers = map[string]interfaces.EventHandler{
 	models.ROOM_CREATED: &models.CreateEventStrategy{},
+	models.JOIN_ROOM: &models.JoinRoomStrategy{},
 }
