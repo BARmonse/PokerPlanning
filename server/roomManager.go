@@ -57,13 +57,23 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 			err = json.Unmarshal(message, &event)
 
 			if err != nil {
-				log.Println("Failed to decoding event:", err)
+				log.Println("Errow while decoding event:", err)
 				continue
 			}
 
 			switch event.Type {
 			case models.ROOM_CREATED:
-				log.Println("A room was created")
+				var createdRoomPayload models.RoomCreatedPayload
+				
+				err = json.Unmarshal(event.Payload, &createdRoomPayload)
+
+				if err != nil {
+					log.Println("Errow while decoding username:", err)
+					continue
+				}
+				
+				log.Printf("Room created by %v", createdRoomPayload.Username)
+
 
 			default:
 				log.Println("Unknown event type:", event.Type)
@@ -72,7 +82,7 @@ func (roomManager *RoomManager) serve(ctx *fasthttp.RequestCtx) {
 	})
 
 	if err != nil {
-		log.Println("Error upgrading connection:", err)
+		log.Println("Error while upgrading connection:", err)
 	}
 }
 
