@@ -3,14 +3,15 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { roomContainer } from '../styles/Room';
 import { useLocation } from 'react-router';
 import { Room } from '../interfaces/Room';
+import { useTranslation } from 'react-i18next';
 
 export const RoomComponent = () => {
   const location = useLocation();
 
+  const { t } = useTranslation();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [room, setRoom] = useState<Room | null>(null);
-
-  console.log(room);
 
   useEffect(() => {
     setLoading(true);
@@ -28,10 +29,12 @@ export const RoomComponent = () => {
 
   return (
     <Box sx={roomContainer}>
-      <Typography sx={{ color: 'red', fontSize: '5rem' }}>
+      <Typography sx={{ color: 'black', fontSize: '2rem' }}>
+        {t('your_code_room')}
+      </Typography>
+      <Typography sx={{ color: 'red', fontSize: '1.8rem' }}>
         {room?.code}
       </Typography>
-      {room?.code} {room?.identifier}
     </Box>
   );
 };

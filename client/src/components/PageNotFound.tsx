@@ -3,9 +3,11 @@ import {
   notFoundContainerStyle,
   notFoundTextStyle,
 } from '../styles/PageNotFound';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export const PageNotFound = () => {
+  const { t } = useTranslation();
+
   return (
     <Box sx={notFoundContainerStyle}>
       <Typography sx={notFoundTextStyle}>{t('nothing_here')}</Typography>
