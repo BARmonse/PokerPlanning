@@ -26,12 +26,18 @@ export const Dashboard = () => {
 
   useEffect(() => {
     WebSocketService.webSocket.addEventListener('message', message =>
-      console.log(JSON.parse(message.data).payload as Room),
+      navigate('/room', {
+        replace: true,
+        state: JSON.parse(message.data).payload as Room,
+      }),
     );
 
     return () =>
-      WebSocketService.webSocket.removeEventListener('message', message =>
-        console.log(JSON.parse(message.data).payload as Room),
+      WebSocketService.webSocket.addEventListener('message', message =>
+        navigate('/room', {
+          replace: true,
+          state: JSON.parse(message.data).payload as Room,
+        }),
       );
   }, []);
 
@@ -80,7 +86,6 @@ export const Dashboard = () => {
       <TextField
         sx={inputCodeStyle}
         placeholder={t('enter_code')!}
-        defaultValue={null}
         value={code}
         onChange={handleOnChange}
         error={!isValidCode}

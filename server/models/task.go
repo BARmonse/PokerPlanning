@@ -2,9 +2,9 @@ package models
 
 type Task struct {
 
-	Description string
-	Points []int32
-	Estimation int32
+	Description string `json:"description"`
+	Points []int32 `json:"points"`
+	Estimation int32 `json:"estimation"`
 }
 
 

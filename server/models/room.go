@@ -11,10 +11,10 @@ import (
 
 type Room struct {
 
-	Identifier string
-	Code string
-	Players []Player
-	Tasks []Task
+	Identifier string `json:"identifier"`
+	Code string `json:"code"`
+	Players []Player `json:"players"`
+	Tasks []Task `json:"tasks"`
 	Connections []*websocket.Conn
 }
 
