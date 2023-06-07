@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { roomContainer } from '../styles/Room';
+import { playersListContainer, roomContainer } from '../styles/Room';
 import { useLocation } from 'react-router';
 import { Room } from '../interfaces/Room';
 import { useTranslation } from 'react-i18next';
+import { PlayerListComponent } from './PlayerListComponent';
 
 export const RoomComponent = () => {
   const location = useLocation();
@@ -35,6 +36,9 @@ export const RoomComponent = () => {
       <Typography sx={{ color: 'red', fontSize: '1.8rem' }}>
         {room?.code}
       </Typography>
+      <Box sx={playersListContainer}>
+        <PlayerListComponent players={room?.players ?? []} />
+      </Box>
     </Box>
   );
 };

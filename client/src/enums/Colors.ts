@@ -3,4 +3,5 @@ export enum Colors {
   LIGHT_GRAY = '#f0f0f0',
   WHITE = '#ffffff',
   RED = '#ff0000',
+  BLACK = '#000000',
 }
