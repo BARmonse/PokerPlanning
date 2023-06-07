@@ -7,5 +7,6 @@
   "english": "English",
   "nothing_here": "Nothing here, please go back...",
   "enter_your_username": "Enter your username",
-  "your_code_room": "This is your code room, share this with your teammates so they can access to the room"
+  "your_code_room": "This is your code room, share this with your teammates so they can access to the room",
+  "current_players": "Current players"
 }

@@ -13,7 +13,7 @@ export const playersListContainer: SxProps = {
   flexDirection: 'column',
   border: `1px solid ${Colors.NICE_PURPLE}`,
   borderRadius: '20%',
-  padding: '10%',
+  padding: '5%',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   alignSelf: 'flex-start',

@@ -7,5 +7,6 @@
   "english": "Inglés",
   "nothing_here": "No hay nada aquí, por favor regrese atrás...",
   "enter_your_username": "Ingrese su nombre de usuario",
-  "your_code_room": "Este es el código de tu sala, compartilo con tus colegas para que puedan acceder a la sala"
+  "your_code_room": "Este es el código de tu sala, compartilo con tus colegas para que puedan acceder a la sala",
+  "current_players": "Jugadores actuales"
 }
