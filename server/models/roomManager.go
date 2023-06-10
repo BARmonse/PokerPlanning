@@ -82,7 +82,7 @@ func (roomManager *RoomManager) Serve(ctx *fasthttp.RequestCtx) {
 			continue
 			}
 
-			eventHandler.HandleEvent(conn, event.Payload, roomManager.eventEmitter);
+			eventHandler.HandleEvent(conn, event.Payload, *roomManager);
 		}
 	})
 

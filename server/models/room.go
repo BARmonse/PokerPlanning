@@ -56,3 +56,22 @@ func CreateRoom(conn *websocket.Conn, username string) *Room {
 
 	return newRoom
 }
+
+func FindRoomByCode(rooms map[string]*Room, roomCode string) *Room {
+	room, found := rooms[roomCode]
+
+	if (!found) {
+		log.Printf("Room with code %v not found", roomCode)
+	}
+
+	return room
+}
+
+func AddPlayerToRoom(conn *websocket.Conn, room *Room, username string) *Room {
+	var player = CreatePlayer(username, false)
+
+	room.Players = append(room.Players, *player)
+	room.Connections = append(room.Connections, conn)
+
+	return room
+}

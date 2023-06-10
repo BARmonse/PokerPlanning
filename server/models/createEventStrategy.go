@@ -14,9 +14,10 @@ type CreateRoomRequest struct {
 type CreateEventStrategy struct {
 }
 
-func (s *CreateEventStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, em EventEmitter) {
+func (s *CreateEventStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager RoomManager) {
 	var createRoomRequest CreateRoomRequest
 	err := json.Unmarshal(eventPayload, &createRoomRequest)
+
 	if err != nil {
 		log.Println("Error decoding username:", err)
 		return
@@ -24,5 +25,5 @@ func (s *CreateEventStrategy) HandleEvent(conn *websocket.Conn, eventPayload jso
 
 	createdRoom := CreateRoom(conn, createRoomRequest.Username)
 
-	em.Emit(ROOM_CREATED, createdRoom)
+	roomManager.eventEmitter.Emit(ROOM_CREATED, createdRoom)
 }

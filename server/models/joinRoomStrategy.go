@@ -15,13 +15,23 @@ type JoinRoomRequest struct {
 type JoinRoomStrategy struct {
 }
 
-func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, em EventEmitter) {
+func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager RoomManager) {
 	var joinRoomRequest JoinRoomRequest
 	err := json.Unmarshal(eventPayload, &joinRoomRequest)
+
 	if err != nil {
 		log.Println("Error decoding Join room request:", err)
 		return
 	}
 
-	log.Printf("Username %v is trying to access to room with code %v", joinRoomRequest.Username, joinRoomRequest.Code)
+	foundRoom := FindRoomByCode(roomManager.rooms, joinRoomRequest.Code)
+
+	room := AddPlayerToRoom(conn, foundRoom, joinRoomRequest.Username)
+	
+	for _, c := range room.Connections {
+		err := c.WriteJSON(room)
+		if err != nil {
+			log.Println("Error broadcasting room:", err)
+		}
+	}
 }
