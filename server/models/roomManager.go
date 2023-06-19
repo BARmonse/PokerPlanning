@@ -11,7 +11,6 @@ import (
 
 type RoomManager struct {
 	rooms map[string]*Room
-	eventHandler EventHandler
 	eventEmitter EventEmitter
 	sync.RWMutex
 }

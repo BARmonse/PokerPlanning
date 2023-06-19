@@ -33,7 +33,7 @@ export const Dashboard = () => {
     );
 
     return () =>
-      WebSocketService.webSocket.addEventListener('message', message =>
+      WebSocketService.webSocket.removeEventListener('message', message =>
         navigate('/room', {
           replace: true,
           state: JSON.parse(message.data).payload as Room,

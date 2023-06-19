@@ -5,6 +5,7 @@ import { useLocation } from 'react-router';
 import { Room } from '../interfaces/Room';
 import { useTranslation } from 'react-i18next';
 import { PlayerListComponent } from './PlayerListComponent';
+import WebSocketService from '../services/WebSocketService';
 
 export const RoomComponent = () => {
   const location = useLocation();
@@ -15,10 +16,26 @@ export const RoomComponent = () => {
   const [room, setRoom] = useState<Room | null>(null);
 
   useEffect(() => {
+    WebSocketService.webSocket.addEventListener(
+      'message',
+      handleWebSocketMessage,
+    );
+
     setLoading(true);
     setRoom(location.state as Room);
     setLoading(false);
+
+    return () =>
+      WebSocketService.webSocket.removeEventListener(
+        'message',
+        handleWebSocketMessage,
+      );
   }, []);
+
+  const handleWebSocketMessage = (event: MessageEvent) => {
+    const data = JSON.parse(event.data);
+    setRoom(data.payload as Room);
+  };
 
   if (loading) {
     return (
