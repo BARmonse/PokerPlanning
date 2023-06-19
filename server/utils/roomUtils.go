@@ -6,13 +6,11 @@ import (
 	"strings"
 )
 
-
-
 const (
 	alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 )
 
-func GenerateRoomIdentifier(length int) string {
+func GenerateIdentifier(length int) string {
 	var builder strings.Builder
 	charSetLength := big.NewInt(int64(len(alphanumericChars)))
 

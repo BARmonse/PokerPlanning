@@ -14,7 +14,7 @@ export const PlayerListComponent = ({ players }: Props) => {
     <>
       <Typography>{t('current_players')}</Typography>
       {players.map(player => (
-        <PlayerItemComponent key={player.name} player={player} />
+        <PlayerItemComponent key={player.identifier} player={player} />
       ))}
     </>
   );

@@ -33,7 +33,7 @@ func (roomManager *RoomManager) addRoom(room *Room) {
 	roomManager.rooms[room.Code] = room
 }
 
-func (roomManager *RoomManager) removeClient(room *Room) {
+func (roomManager *RoomManager) removeRoom(room *Room) {
 	roomManager.Lock()
 	defer roomManager.Unlock()
 

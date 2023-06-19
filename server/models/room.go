@@ -20,8 +20,8 @@ type Room struct {
 
 
 func CreateRoom(conn *websocket.Conn, username string) *Room {
-	var identifier = utils.GenerateRoomIdentifier(16)
-	var code = utils.GenerateRoomIdentifier(6)
+	var identifier = utils.GenerateIdentifier(16)
+	var code = utils.GenerateIdentifier(6)
 
 	var player = CreatePlayer(username, true)
 
