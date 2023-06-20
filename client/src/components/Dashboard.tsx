@@ -1,15 +1,14 @@
-import { Box, Button, Input, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { useState, useMemo, useEffect } from 'react';
-import { validateRoomCode, validateUsername } from '../utils/ValidationUtils';
+import { validateRoomCode } from '../utils/ValidationUtils';
 import {
   buttonStyle,
   dashboardContainerStyle,
   inputCodeStyle,
-  userNameStyle,
 } from '../styles/Dashboard';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import WebSocketService from '../services/WebSocketService';
 import { EventType } from '../enums/EventType';
 import { Room } from '../interfaces/Room';
@@ -17,12 +16,13 @@ import { Room } from '../interfaces/Room';
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [username, setUsername] = useState<string>('');
+  const location = useLocation();
+
   const [code, setCode] = useState<string>('');
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
-  const isValidUsername = useMemo(() => validateUsername(username), [username]);
+  const username = location.state as string;
 
   useEffect(() => {
     WebSocketService.webSocket.addEventListener('message', message =>
@@ -56,28 +56,13 @@ export const Dashboard = () => {
     WebSocketService.sendEvent(EventType.ROOM_CREATED, { username: username });
   };
 
-  const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-
   return (
     <Box sx={dashboardContainerStyle}>
-      <Typography sx={userNameStyle}>
-        {t('enter_your_username').toUpperCase()}
-      </Typography>
-      <Input
-        value={username}
-        placeholder={t('enter_your_username')!}
-        onChange={handleUsername}
-      />
-      <Button
-        sx={buttonStyle}
-        onClick={handleCreateRoomClick}
-        disabled={!isValidUsername}>
+      <Button sx={buttonStyle} onClick={handleCreateRoomClick}>
         {t('create_room')}
       </Button>
       <Button
-        disabled={!isValidCode || !isValidUsername}
+        disabled={!isValidCode}
         onClick={handleJoinClick}
         sx={buttonStyle}>
         {t('join_room')}

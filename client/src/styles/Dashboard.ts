@@ -21,9 +21,3 @@ export const dashboardContainerStyle: SxProps = {
 export const inputCodeStyle: SxProps = {
   width: '50%',
 };
-
-export const userNameStyle: SxProps = {
-  fontSize: '1.5rem',
-  color: Colors.NICE_PURPLE,
-  fontWeight: 'bold',
-};

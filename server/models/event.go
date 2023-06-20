@@ -11,6 +11,7 @@ const (
 	ROOM_CREATED = "room_created"
 	ROOM_CLOSED = "room_closed"
 	JOIN_ROOM = "join_room"
+	USERNAME_CREATED = "username_created"
   	USER_JOINED = "user_joined"
  	USER_LEFT = "user_joined"
   	USER_VOTED = "user_voted"
