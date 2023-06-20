@@ -15,7 +15,7 @@ type JoinRoomRequest struct {
 type JoinRoomStrategy struct {
 }
 
-func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager RoomManager) {
+func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager *RoomManager) {
 	var joinRoomRequest JoinRoomRequest
 	err := json.Unmarshal(eventPayload, &joinRoomRequest)
 

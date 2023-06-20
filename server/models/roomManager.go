@@ -11,14 +11,14 @@ import (
 
 type RoomManager struct {
 	rooms map[string]*Room
-	eventEmitter EventEmitter
+	eventEmitter *EventEmitter
 	sync.RWMutex
 }
 
 func NewRoomManager() *RoomManager {
 	roomManager := &RoomManager{
 		rooms: make(map[string]*Room),
-		eventEmitter: *NewEventEmitter(),
+		eventEmitter: NewEventEmitter(),
 	}
 
 	roomManager.setupListeners()
@@ -81,7 +81,7 @@ func (roomManager *RoomManager) Serve(ctx *fasthttp.RequestCtx) {
 			continue
 			}
 
-			eventHandler.HandleEvent(conn, event.Payload, *roomManager);
+			eventHandler.HandleEvent(conn, event.Payload, roomManager);
 		}
 	})
 
