@@ -3,6 +3,7 @@ import { Colors } from '../enums/Colors';
 
 export const playerStyle: SxProps = {
   color: Colors.BLACK,
+  fontWeight: 'bold',
 };
 
 export const adminStyle: SxProps = {
