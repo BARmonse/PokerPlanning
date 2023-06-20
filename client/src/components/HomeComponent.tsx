@@ -31,7 +31,7 @@ export const HomeComponent = () => {
     setUsername(event.target.value);
   };
 
-  const handleUserLogged = (event: MessageEvent<Player>) => {
+  const handleUserLogged = (event: MessageEvent) => {
     navigate('/dashboard', {
       replace: true,
       state: JSON.parse(event.data).payload as Player,
@@ -64,7 +64,7 @@ export const HomeComponent = () => {
         sx={buttonStyle}
         onClick={handleUserLogin}
         disabled={!isValidUsername}>
-        {t('create_room')}
+        {t('create_user')}
       </Button>
     </Box>
   );

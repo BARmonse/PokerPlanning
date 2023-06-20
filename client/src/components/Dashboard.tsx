@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import WebSocketService from '../services/WebSocketService';
 import { EventType } from '../enums/EventType';
 import { Room } from '../interfaces/Room';
+import { Player } from '../interfaces/Player';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const Dashboard = () => {
 
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
-  const username = location.state as string;
+  const player = location.state as Player;
 
   useEffect(() => {
     WebSocketService.webSocket.addEventListener('message', message =>
@@ -43,7 +44,7 @@ export const Dashboard = () => {
 
   const handleJoinClick = () => {
     WebSocketService.sendEvent(EventType.JOIN_ROOM, {
-      username: username,
+      username: player.name,
       code: code,
     });
   };
@@ -53,7 +54,9 @@ export const Dashboard = () => {
   };
 
   const handleCreateRoomClick = () => {
-    WebSocketService.sendEvent(EventType.ROOM_CREATED, { username: username });
+    WebSocketService.sendEvent(EventType.ROOM_CREATED, {
+      username: player.name,
+    });
   };
 
   return (

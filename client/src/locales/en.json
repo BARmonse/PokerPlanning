@@ -1,4 +1,5 @@
 {
+  "create_user": "Create User",
   "create_room": "Create Room",
   "join_room": "Join Room",
   "enter_code": "Enter a code to enter a room",
