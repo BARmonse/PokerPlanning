@@ -19,14 +19,14 @@ type Room struct {
 }
 
 
-func CreateRoom(conn *websocket.Conn, username string) *Room {
+func CreateRoom(conn *websocket.Conn, player Player) *Room {
 	var identifier = utils.GenerateIdentifier(16)
 	var code = utils.GenerateIdentifier(6)
 
-	var player = CreatePlayer(username, true)
+	player.IsAdmin = true
 
 	var initialPlayers = []Player{
-		*player,
+		player,
 	}
 
 	var initialConnections = []*websocket.Conn{
@@ -48,7 +48,7 @@ func CreateRoom(conn *websocket.Conn, username string) *Room {
 	}
 
 	event := Event{
-		Type:    "ROOM_CREATED",
+		Type:    ROOM_CREATED,
 		Payload: newRoomJSON,
 	}
 	eventJSON, _ := json.Marshal(event)
@@ -67,10 +67,8 @@ func FindRoomByCode(rooms map[string]*Room, roomCode string) *Room {
 	return room
 }
 
-func AddPlayerToRoom(conn *websocket.Conn, room *Room, username string) *Room {
-	var player = CreatePlayer(username, false)
-
-	room.Players = append(room.Players, *player)
+func AddPlayerToRoom(conn *websocket.Conn, room *Room, player Player) *Room {
+	room.Players = append(room.Players, player)
 	room.Connections = append(room.Connections, conn)
 
 	return room

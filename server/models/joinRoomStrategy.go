@@ -8,7 +8,7 @@ import (
 )
 
 type JoinRoomRequest struct {
-	Username string `json:"username"`
+	User Player `json:"user"`
 	Code string `json:"code"`
 }
 
@@ -26,7 +26,7 @@ func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.R
 
 	foundRoom := FindRoomByCode(roomManager.rooms, joinRoomRequest.Code)
 
-	room := AddPlayerToRoom(conn, foundRoom, joinRoomRequest.Username)
+	room := AddPlayerToRoom(conn, foundRoom, joinRoomRequest.User)
 
 	roomJSON, err := json.Marshal(room)
 	if err != nil {
@@ -35,7 +35,7 @@ func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.R
 	}
 
 	event := Event{
-		Type:    "JOIN_ROOM",
+		Type:    JOIN_ROOM,
 		Payload: roomJSON,
 	}
 

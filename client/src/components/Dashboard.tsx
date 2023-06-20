@@ -8,43 +8,59 @@ import {
 } from '../styles/Dashboard';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WebSocketService from '../services/WebSocketService';
 import { EventType } from '../enums/EventType';
 import { Room } from '../interfaces/Room';
-import { Player } from '../interfaces/Player';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { userActions } from '../store/user-slice';
+import { Event } from '../interfaces/Event';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const location = useLocation();
 
   const [code, setCode] = useState<string>('');
 
+  const dispatch = useAppDispatch();
+
+  const loggedUser = useAppSelector(state => state.user);
+
   const isValidCode = useMemo(() => validateRoomCode(code), [code]);
 
-  const player = location.state as Player;
-
   useEffect(() => {
-    WebSocketService.webSocket.addEventListener('message', message =>
-      navigate('/room', {
-        replace: true,
-        state: JSON.parse(message.data).payload as Room,
-      }),
+    WebSocketService.webSocket.addEventListener(
+      'message',
+      handleCreateAndJoinRoomEvent,
     );
 
     return () =>
-      WebSocketService.webSocket.removeEventListener('message', message =>
-        navigate('/room', {
-          replace: true,
-          state: JSON.parse(message.data).payload as Room,
-        }),
+      WebSocketService.webSocket.removeEventListener(
+        'message',
+        handleCreateAndJoinRoomEvent,
       );
   }, []);
 
+  const handleCreateAndJoinRoomEvent = (event: MessageEvent) => {
+    const parsedEvent: Event = JSON.parse(event.data);
+    (parsedEvent.payload as Room).players;
+
+    if (parsedEvent.type === EventType.ROOM_CREATED) {
+      const user = (parsedEvent.payload as Room).players.find(
+        player => loggedUser.identifier === player.identifier,
+      );
+      dispatch(userActions.setUserState(user!));
+    }
+
+    navigate('/room', {
+      replace: true,
+      state: parsedEvent.payload as Room,
+    });
+  };
+
   const handleJoinClick = () => {
     WebSocketService.sendEvent(EventType.JOIN_ROOM, {
-      username: player.name,
+      user: loggedUser,
       code: code,
     });
   };
@@ -55,7 +71,7 @@ export const Dashboard = () => {
 
   const handleCreateRoomClick = () => {
     WebSocketService.sendEvent(EventType.ROOM_CREATED, {
-      username: player.name,
+      user: loggedUser,
     });
   };
 

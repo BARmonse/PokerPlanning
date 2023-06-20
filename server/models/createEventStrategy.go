@@ -8,7 +8,7 @@ import (
 )
 
 type CreateRoomRequest struct {
-	Username string `json:"username"`
+	Player Player `json:"user"`
 }
 
 type CreateEventStrategy struct {
@@ -23,7 +23,7 @@ func (s *CreateEventStrategy) HandleEvent(conn *websocket.Conn, eventPayload jso
 		return
 	}
 
-	createdRoom := CreateRoom(conn, createRoomRequest.Username)
+	createdRoom := CreateRoom(conn, createRoomRequest.Player)
 
 	roomManager.eventEmitter.Emit(ROOM_CREATED, createdRoom)
 }

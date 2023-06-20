@@ -8,12 +8,15 @@ import { Player } from '../interfaces/Player';
 import { buttonStyle } from '../styles/Dashboard';
 import { EventType } from '../enums/EventType';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../hooks/useRedux';
+import { userActions } from '../store/user-slice';
 
 export const HomeComponent = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>('');
-
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  const [username, setUsername] = useState<string>('');
 
   const isValidUsername = useMemo(() => validateUsername(username), [username]);
 
@@ -32,9 +35,11 @@ export const HomeComponent = () => {
   };
 
   const handleUserLogged = (event: MessageEvent) => {
+    const createdPlayer = JSON.parse(event.data).payload as Player;
+
+    dispatch(userActions.setUserState(createdPlayer));
     navigate('/dashboard', {
       replace: true,
-      state: JSON.parse(event.data).payload as Player,
     });
   };
 
