@@ -80,3 +80,21 @@ func AddTask(room *Room, taskDescription string) *Room {
 	return room
 }
 
+func updateTaskDescription(tasks []Task, taskIdentifier string, description string) {
+	for _, task := range tasks {
+		if task.Identifier == taskIdentifier {
+			task.Description = description
+			break
+		}
+	}
+}
+
+func removeTaskByIdentifier(tasks []Task, taskIdentifier string) {
+	for i, task := range tasks {
+		if task.Identifier == taskIdentifier {
+			_ = append(tasks[:i], tasks[i+1:]...)
+			break
+		}
+	}
+}
+
