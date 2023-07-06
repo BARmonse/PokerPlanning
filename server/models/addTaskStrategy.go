@@ -7,24 +7,24 @@ import (
 	"github.com/fasthttp/websocket"
 )
 
-type JoinRoomRequest struct {
-	User Player `json:"user"`
+type AddTaskRequest struct {
+	Description string `json:"description"`
 	Code string `json:"code"`
 }
 
-type JoinRoomStrategy struct {
+type AddTaskStrategy struct {
 }
 
-func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager *RoomManager) {
-	var joinRoomRequest JoinRoomRequest
-	err := json.Unmarshal(eventPayload, &joinRoomRequest)
+func (s *AddTaskStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.RawMessage, roomManager *RoomManager) {
+	var addTaskRequest AddTaskRequest
+	err := json.Unmarshal(eventPayload, &addTaskRequest)
 
 	if err != nil {
-		log.Println("Error decoding Join room request:", err)
+		log.Println("Error decoding task description:", err)
 		return
 	}
 
-	room := AddPlayerToRoom(conn, FindRoomByCode(roomManager.rooms, joinRoomRequest.Code), joinRoomRequest.User)
+	room := AddTask(FindRoomByCode(roomManager.rooms, addTaskRequest.Code), addTaskRequest.Description)
 
 	roomJSON, err := json.Marshal(room)
 	if err != nil {
@@ -33,7 +33,7 @@ func (s *JoinRoomStrategy) HandleEvent(conn *websocket.Conn, eventPayload json.R
 	}
 
 	event := Event{
-		Type:    JOIN_ROOM,
+		Type: TASK_ADDED,
 		Payload: roomJSON,
 	}
 

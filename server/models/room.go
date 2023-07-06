@@ -73,3 +73,10 @@ func AddPlayerToRoom(conn *websocket.Conn, room *Room, player Player) *Room {
 
 	return room
 }
+
+func AddTask(room *Room, taskDescription string) *Room {
+	
+	room.Tasks = append(room.Tasks, *newTask(taskDescription))
+	return room
+}
+
