@@ -1,11 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState, useMemo, useEffect } from 'react';
 import { validateRoomCode } from '../utils/ValidationUtils';
-import {
-  buttonStyle,
-  dashboardContainerStyle,
-  inputCodeStyle,
-} from '../styles/Dashboard';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +10,8 @@ import { Room } from '../interfaces/Room';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { userActions } from '../store/user-slice';
 import { Event } from '../interfaces/Event';
+import { Colors } from '../enums/Colors';
+import { Style } from '../interfaces/Style';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -76,19 +73,19 @@ export const Dashboard = () => {
   };
 
   return (
-    <Box sx={dashboardContainerStyle}>
-      <Button sx={buttonStyle} onClick={handleCreateRoomClick}>
+    <Box sx={styles.container}>
+      <Button sx={styles.button} onClick={handleCreateRoomClick}>
         {t('create_room')}
       </Button>
       <Button
         disabled={!isValidCode}
         onClick={handleJoinClick}
-        sx={buttonStyle}>
+        sx={styles.button}>
         {t('join_room')}
       </Button>
 
       <TextField
-        sx={inputCodeStyle}
+        sx={styles.inputCode}
         placeholder={t('enter_code')!}
         value={code}
         onChange={handleOnChange}
@@ -97,4 +94,25 @@ export const Dashboard = () => {
       />
     </Box>
   );
+};
+
+const styles: Style = {
+  button: {
+    color: Colors.NICE_PURPLE,
+    borderRadius: '5px',
+    border: `3px solid ${Colors.NICE_PURPLE}`,
+    width: '50%',
+    fontSize: '24px',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    flex: '1 0 auto',
+    minHeight: '100vh',
+    gap: '3em',
+  },
+  inputCode: {
+    width: '50%',
+  },
 };

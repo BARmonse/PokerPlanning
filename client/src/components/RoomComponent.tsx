@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { playersListContainer, roomContainer } from '../styles/Room';
 import { useLocation } from 'react-router';
 import { Room } from '../interfaces/Room';
 import { useTranslation } from 'react-i18next';
 import { PlayerListComponent } from './PlayerListComponent';
 import WebSocketService from '../services/WebSocketService';
+import { Style } from '../interfaces/Style';
+import { Colors } from '../enums/Colors';
 
 export const RoomComponent = () => {
   const location = useLocation();
@@ -39,23 +40,42 @@ export const RoomComponent = () => {
 
   if (loading) {
     return (
-      <Box sx={roomContainer}>
+      <Box sx={styles.roomContainer}>
         <CircularProgress color="success" />
       </Box>
     );
   }
 
   return (
-    <Box sx={roomContainer}>
+    <Box sx={styles.roomContainer}>
       <Typography sx={{ color: 'black', fontSize: '2rem' }}>
         {t('your_code_room')}
       </Typography>
       <Typography sx={{ color: 'red', fontSize: '1.8rem' }}>
         {room?.code}
       </Typography>
-      <Box sx={playersListContainer}>
+      <Box sx={styles.playersListContainer}>
         <PlayerListComponent players={room?.players ?? []} />
       </Box>
     </Box>
   );
+};
+
+const styles: Style = {
+  roomContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  playersListContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: `1px solid ${Colors.NICE_PURPLE}`,
+    borderRadius: '20%',
+    padding: '5%',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start',
+  },
 };

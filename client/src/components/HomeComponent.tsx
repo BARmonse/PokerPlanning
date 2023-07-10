@@ -3,13 +3,13 @@ import WebSocketService from '../services/WebSocketService';
 import { useNavigate } from 'react-router';
 import { validateUsername } from '../utils/ValidationUtils';
 import { Typography, Input, Button, Box } from '@mui/material';
-import { userNameStyle } from '../styles/Home';
 import { Player } from '../interfaces/Player';
-import { buttonStyle } from '../styles/Dashboard';
 import { EventType } from '../enums/EventType';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../hooks/useRedux';
 import { userActions } from '../store/user-slice';
+import { Style } from '../interfaces/Style';
+import { Colors } from '../enums/Colors';
 
 export const HomeComponent = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export const HomeComponent = () => {
         alignItems: 'center',
         gap: '10%',
       }}>
-      <Typography sx={userNameStyle}>
+      <Typography sx={styles.username}>
         {t('enter_your_username').toUpperCase()}
       </Typography>
       <Input
@@ -66,11 +66,26 @@ export const HomeComponent = () => {
         onChange={handleUsername}
       />
       <Button
-        sx={buttonStyle}
+        sx={styles.button}
         onClick={handleUserLogin}
         disabled={!isValidUsername}>
         {t('create_user')}
       </Button>
     </Box>
   );
+};
+
+const styles: Style = {
+  username: {
+    fontSize: '1.5rem',
+    color: Colors.NICE_PURPLE,
+    fontWeight: 'bold',
+  },
+  button: {
+    color: Colors.NICE_PURPLE,
+    borderRadius: '5px',
+    border: `3px solid ${Colors.NICE_PURPLE}`,
+    width: '50%',
+    fontSize: '24px',
+  },
 };

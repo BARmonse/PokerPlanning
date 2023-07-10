@@ -3,14 +3,15 @@ import './index.css';
 import { Header } from './components/Header';
 import { PageNotFound } from './components/PageNotFound';
 import { Box } from '@mui/material';
-import { appContainerStyle } from './styles/App';
 import { RoomComponent } from './components/RoomComponent';
 import { HomeComponent } from './components/HomeComponent';
 import { Dashboard } from './components/Dashboard';
+import { Style } from './interfaces/Style';
+import { Colors } from './enums/Colors';
 
 const App = () => {
   return (
-    <Box sx={appContainerStyle}>
+    <Box sx={styles.container}>
       <Header />
       <Router>
         <Routes>
@@ -22,6 +23,13 @@ const App = () => {
       </Router>
     </Box>
   );
+};
+
+const styles: Style = {
+  container: {
+    backgroundColor: Colors.LIGHT_GRAY,
+    minHeight: '100vh',
+  },
 };
 
 export default App;

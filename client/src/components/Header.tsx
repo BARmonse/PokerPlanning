@@ -9,16 +9,10 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Language } from '../enums/Language';
-import {
-  headerContainerStyle,
-  headerTitleStyle,
-  languageSelectStyle,
-  mobileHeaderTitleStyle,
-  selectLanguageContainerStyle,
-  titleContainerStyle,
-} from '../styles/Header';
 import { useTranslation } from 'react-i18next';
 import { POKER_PLANNING } from '../constants/constants';
+import { Style } from '../interfaces/Style';
+import { Colors } from '../enums/Colors';
 
 export const Header = () => {
   const theme = useTheme();
@@ -34,15 +28,16 @@ export const Header = () => {
   };
 
   return (
-    <Box sx={headerContainerStyle}>
-      <Box sx={titleContainerStyle}>
-        <Typography sx={isMobile ? mobileHeaderTitleStyle : headerTitleStyle}>
+    <Box sx={styles.headerContainer}>
+      <Box sx={styles.titleContainer}>
+        <Typography
+          sx={isMobile ? styles.mobileHeaderTitle : styles.headerTitle}>
           {POKER_PLANNING}
         </Typography>
       </Box>
-      <Box sx={selectLanguageContainerStyle}>
+      <Box sx={styles.selectLanguageContainer}>
         <Select
-          sx={languageSelectStyle}
+          sx={styles.languageSelector}
           labelId="language"
           id="language"
           value={language}
@@ -54,4 +49,38 @@ export const Header = () => {
       </Box>
     </Box>
   );
+};
+
+const styles: Style = {
+  headerContainer: {
+    display: 'flex',
+    minHeight: '10vh',
+    backgroundColor: Colors.NICE_PURPLE,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: '0 0 auto',
+    marginBottom: '4%',
+  },
+  titleContainer: {
+    margin: 'auto',
+  },
+  headerTitle: {
+    display: 'flex',
+    alignSelf: 'center',
+    color: Colors.WHITE,
+    fontSize: '3.125rem',
+  },
+  mobileHeaderTitle: {
+    display: 'flex',
+    alignSelf: 'center',
+    color: Colors.WHITE,
+    fontSize: '1.875rem',
+  },
+  selectLanguageContainer: {
+    alignSelf: 'flex-end',
+  },
+  languageSelector: {
+    display: 'flex',
+    alignSelf: 'center',
+  },
 };
